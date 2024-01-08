@@ -1,14 +1,17 @@
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
-const cors = require('cors'); // Import the cors middleware
+const cors = require('cors');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-// Use CORS middleware
+// Use CORS middleware for Express
 app.use(cors());
+
+// Configure CORS for Socket.io
+io.origins('*:*');  // Allow all origins; adjust as needed for security
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
