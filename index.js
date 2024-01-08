@@ -1,7 +1,7 @@
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
-const cors = require('cors'); // Import the cors middleware
+const cors = require('cors');
 
 const app = express();
 const server = http.createServer(app);
@@ -19,10 +19,11 @@ io.on('connection', (socket) => {
 
   // Listen for messages from the client
   socket.on('chat message', (msg) => {
-    console.log(`Message: ${msg}`);
-    
-    // Broadcast the message to all connected clients
-    io.emit('chat message', msg);
+    console.log(`Message received: ${msg}`);
+
+    // Respond with a JSON message
+    const response = { status: 'success', message: `Message received: ${msg}` };
+    socket.emit('chat message', response);
   });
 
   // Handle disconnection
