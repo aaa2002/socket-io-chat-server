@@ -1,24 +1,14 @@
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
-const cors = require('cors');
+const cors = require('cors'); // Import the cors middleware
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-// Use CORS middleware for Express
+// Use CORS middleware
 app.use(cors());
-
-// Configure CORS for Socket.io
-io.origins(['https://main--roaring-meerkat-67c10c.netlify.app', 'http://localhost:3000']); // Allow all origins; adjust as needed for security
-
-// Serve static files
-app.use(express.static('public'));
-
-// API routes
-const apiRoutes = require('./routes/api');
-app.use('/api', apiRoutes);
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
@@ -30,7 +20,7 @@ io.on('connection', (socket) => {
   // Listen for messages from the client
   socket.on('chat message', (msg) => {
     console.log(`Message: ${msg}`);
-
+    
     // Broadcast the message to all connected clients
     io.emit('chat message', msg);
   });
