@@ -11,7 +11,7 @@ const io = socketIO(server);
 app.use(cors());
 
 // Configure CORS for Socket.io
-io.origins('*:*'); // Allow all origins; adjust as needed for security
+io.origins(['https://main--roaring-meerkat-67c10c.netlify.app', 'http://localhost:3000']); // Allow all origins; adjust as needed for security
 
 // Serve static files
 app.use(express.static('public'));
