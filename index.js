@@ -11,7 +11,14 @@ const io = socketIO(server);
 app.use(cors());
 
 // Configure CORS for Socket.io
-io.origins('*:*');  // Allow all origins; adjust as needed for security
+io.origins('*:*'); // Allow all origins; adjust as needed for security
+
+// Serve static files
+app.use(express.static('public'));
+
+// API routes
+const apiRoutes = require('./routes/api');
+app.use('/api', apiRoutes);
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
@@ -23,7 +30,7 @@ io.on('connection', (socket) => {
   // Listen for messages from the client
   socket.on('chat message', (msg) => {
     console.log(`Message: ${msg}`);
-    
+
     // Broadcast the message to all connected clients
     io.emit('chat message', msg);
   });
